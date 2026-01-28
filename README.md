@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Be My Valentine?</title>
+  <title>Ana, Be My Valentine?</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -23,7 +23,8 @@
       border-radius: 25px;
       text-align: center;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      max-width: 350px;
+      max-width: 360px;
+      z-index: 2;
     }
 
     h1 {
@@ -38,29 +39,32 @@
 
     button {
       font-size: 1rem;
-      padding: 12px 20px;
+      padding: 12px 22px;
       border: none;
       border-radius: 30px;
       cursor: pointer;
       margin: 10px;
+      transition: all 0.2s ease;
     }
 
     #yesBtn {
       background: #ff4d6d;
       color: white;
+      font-size: 1.1rem;
     }
 
     #noBtn {
       background: #ddd;
       color: #333;
-      position: relative;
+      position: absolute;
     }
 
     .hearts {
       position: fixed;
       top: -10px;
-      font-size: 20px;
+      font-size: 22px;
       animation: fall 5s linear infinite;
+      z-index: 1;
     }
 
     @keyframes fall {
@@ -74,28 +78,53 @@
 <body>
 
   <div class="card">
-    <h1>Hey ❤️</h1>
+    <h1>Ana ❤️</h1>
     <p>Will you be my Valentine?</p>
     <button id="yesBtn" onclick="sayYes()">Yes 💕</button>
-    <button id="noBtn" onmouseover="moveNo()">No 🙄</button>
+    <button id="noBtn" onmouseover="goCrazy()">No 🙄</button>
   </div>
 
   <script>
+    let noCount = 0;
+
+    function goCrazy() {
+      const btn = document.getElementById("noBtn");
+      noCount++;
+
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 50);
+
+      btn.style.left = x + "px";
+      btn.style.top = y + "px";
+      btn.style.transform = `scale(${Math.max(0.4, 1 - noCount * 0.1)}) rotate(${Math.random() * 360}deg)`;
+
+      const texts = [
+        "No 🙄",
+        "Wait—",
+        "Stop 😭",
+        "Wrong choice",
+        "Try again",
+        "Be serious",
+        "That’s illegal",
+        "You don’t mean that",
+        "Click Yes 😏"
+      ];
+
+      btn.innerText = texts[Math.min(noCount, texts.length - 1)];
+
+      const yesBtn = document.getElementById("yesBtn");
+      yesBtn.style.transform = `scale(${1 + noCount * 0.05})`;
+    }
+
     function sayYes() {
       document.body.innerHTML = `
         <div class="card">
-          <h1>YAY!!! 💖💖💖</h1>
-          <p>I can’t wait to spend Valentine’s Day with you 😘</p>
+          <h1>YAY ANA!!! 💖💖💖</h1>
+          <p>You officially made me the happiest person ever 🥹<br><br>
+          I can’t wait to be your Valentine 😘</p>
         </div>
       `;
       createHearts();
-    }
-
-    function moveNo() {
-      const btn = document.getElementById("noBtn");
-      const x = Math.random() * 200 - 100;
-      const y = Math.random() * 200 - 100;
-      btn.style.transform = `translate(${x}px, ${y}px)`;
     }
 
     function createHearts() {
@@ -108,7 +137,7 @@
         document.body.appendChild(heart);
 
         setTimeout(() => heart.remove(), 5000);
-      }, 300);
+      }, 250);
     }
   </script>
 
